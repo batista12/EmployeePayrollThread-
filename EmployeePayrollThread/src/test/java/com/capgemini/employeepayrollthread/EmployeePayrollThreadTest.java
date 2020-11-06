@@ -331,6 +331,15 @@ public class EmployeePayrollThreadTest {
 			int statusCode = response.getStatusCode();
 			Assert.assertEquals(200, statusCode);
 		}
+		@Test
+		public void retreiveEmployees_FromJsonServer_ShouldMatchCount(){
+			EmployeePayRoll[] employees = getEmployeeList();
+			EmployeePayService empPayRollService = new EmployeePayService(new ArrayList<EmployeePayRoll>(Arrays.asList(employees)));
+			int CountOfEntries = empPayRollService.noOfEntries("REST_IO");
+			System.out.println(CountOfEntries);
+			Assert.assertEquals(4, CountOfEntries);
+		}
+
 	}
 
 	

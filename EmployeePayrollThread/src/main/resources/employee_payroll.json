@@ -2,9 +2,9 @@
   "employee_payroll": [
     {
       "id": 1,
-      "name": "Manasi",
-      "salary": 130000,
-      "companyId": 2,
+      "name": "Riya",
+      "salary": 150000,
+      "companyId": 3,
       "gender": "F",
       "departmentName": [
         "Management"
@@ -19,8 +19,161 @@
     },
     {
       "id": 2,
+      "name": "Shivani",
+      "salary": 100000,
+      "companyId": 3,
+      "gender": "F",
+      "departmentName": [
+        "Management"
+      ],
+      "startDate": [
+        {
+          "year": 2011,
+          "month": 7,
+          "day": 29
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Namrata",
+      "salary": 70000,
+      "companyId": 4,
+      "gender": "F",
+      "departmentName": [
+        "Management"
+      ],
+      "startDate": [
+        {
+          "year": 2017,
+          "month": 7,
+          "day": 7
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Raina",
+      "salary": 80000,
+      "companyId": 3,
+      "gender": "F",
+      "departmentName": [
+        "Management"
+      ],
+      "startDate": [
+        {
+          "year": 2020,
+          "month": 4,
+          "day": 29
+        }
+      ]
+    },
+    {
+      "id": 5,
       "name": "Riya",
-      "salary": 150000,
+      "salary": 100000,
+      "companyId": 3,
+      "gender": "F",
+      "departmentName": [
+        "Management"
+      ],
+      "startDate": [
+        {
+          "year": 2011,
+          "month": 7,
+          "day": 29
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Shivani",
+      "salary": 70000,
+      "companyId": 4,
+      "gender": "F",
+      "departmentName": [
+        "Management"
+      ],
+      "startDate": [
+        {
+          "year": 2017,
+          "month": 7,
+          "day": 7
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Riya",
+      "salary": 60000,
+      "companyId": 3,
+      "gender": "F",
+      "departmentName": [
+        "Management"
+      ],
+      "startDate": [
+        {
+          "year": 2020,
+          "month": 4,
+          "day": 29
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Shivani",
+      "salary": 100000,
+      "companyId": 3,
+      "gender": "F",
+      "departmentName": [
+        "Management"
+      ],
+      "startDate": [
+        {
+          "year": 2011,
+          "month": 7,
+          "day": 29
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Namrata",
+      "salary": 70000,
+      "companyId": 4,
+      "gender": "F",
+      "departmentName": [
+        "Management"
+      ],
+      "startDate": [
+        {
+          "year": 2017,
+          "month": 7,
+          "day": 7
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Riya",
+      "salary": 60000,
+      "companyId": 3,
+      "gender": "F",
+      "departmentName": [
+        "Management"
+      ],
+      "startDate": [
+        {
+          "year": 2020,
+          "month": 4,
+          "day": 29
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Shivani",
+      "salary": 130000,
       "companyId": 2,
       "gender": "F",
       "departmentName": [
@@ -28,7 +181,7 @@
       ],
       "startDate": [
         {
-          "year": 2018,
+          "year": 2017,
           "month": 5,
           "day": 1
         }
