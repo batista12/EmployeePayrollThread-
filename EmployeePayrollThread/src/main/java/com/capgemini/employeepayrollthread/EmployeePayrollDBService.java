@@ -1,5 +1,4 @@
 package com.capgemini.employeepayrollthread;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,11 +10,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
 public class EmployeePayrollDBService {
 
 	private PreparedStatement preparedStatement;
+	private int connectionCounter=0;
+
 	private static EmployeePayrollDBService employeePayRollDBService;
+
 	private EmployeePayrollDBService() {
 	}
 
@@ -291,21 +292,25 @@ public class EmployeePayrollDBService {
 		}
 	}
 
-	private Connection getConnection() throws CustomSQLException {
-		String jdbcURL = "jdbc:mysql://localhost:3306/employee_payroll_service?useSSL=false";
+	private synchronized Connection getConnection() throws CustomSQLException {
+		connectionCounter += 1; 
+		String jdbcURL = "jdbc:mysql://localhost:3307/employee_payroll_service?useSSL=false";
 		String userName = "root";
-		String password = "Manasi@1998";
+		String password = "manasi@1998";
+		System.out.println("Processing Thread : "+Thread.currentThread().getName()+" with Id : "+connectionCounter);
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection(jdbcURL, userName, password);
 		} catch (SQLException e) {
 			throw new CustomSQLException(e.getMessage(), CustomSQLException.Exception_Type.CONNECTION_FAILED);
 		}
+		System.out.println("Processing Thread : "+Thread.currentThread().getName()+" with Id : "+connectionCounter+" "+connection+" Connection Successfully Established");
+		
 		return connection;
 	}
 
 	public EmployeePayRoll getEmployee(String name) throws CustomSQLException {
-		List<EmployeePayRoll> employeePayRollList = new ArrayList<EmployeePayRoll>() ;
+		List<EmployeePayRoll> employeePayRollList = new ArrayList<EmployeePayRoll>();
 		employeePayRollList = this.readData();
 		return employeePayRollList.stream().filter(e -> e.getName().equals(name)).findFirst().orElse(null);
 	}
