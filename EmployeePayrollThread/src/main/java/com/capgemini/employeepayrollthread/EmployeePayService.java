@@ -4,7 +4,7 @@ import java.util.*;
 
 public class EmployeePayService {
 	private static List<EmployeePayRoll> empPayRollList;
-	private static EmployeePayrollDBService EmployeePayrollDBService;
+	private static EmployeePayRollDBService EmployeePayrollDBService;
 	private static Scanner sc = new Scanner(System.in);
 
 	public EmployeePayService(List<EmployeePayRoll> empPayRollList) {
@@ -50,7 +50,7 @@ public class EmployeePayService {
 	}
 
 	public void updateSalary(int n, String name, Double salary) throws CustomSQLException {
-		int success = EmployeePayrollDBService.updateSalary(n, name, salary);
+		int success = EmployeePayRollDBService.updateSalary(n, name, salary);
 		if (success == 1) {
 			for (EmployeePayRoll e : empPayRollList) {
 				if (e.getName().equals(name)) {
@@ -179,6 +179,42 @@ public class EmployeePayService {
 			}
 		}
 		return empPayRollList.size();
+	}
+	public void updateSalaryInAllTables(String name,Double salary) throws CustomSQLException
+	{
+		int success = EmployeePayRollDBService.updateSalaryInPayrollTable(name, salary);
+		if (success == 1) {
+			for (EmployeePayRoll e : empPayRollList) {
+				if (e.getName().equals(name)) {
+					e.setSalary(salary);
+				}
+			}
+		}
+		
+	}
+	public void updateMultipleSalary(HashMap<String,Double> salaryMap) throws CustomSQLException {
+		HashMap<Integer, Boolean> additionStatus = new HashMap<Integer, Boolean>();
+		salaryMap.forEach((k,v) -> {
+				additionStatus.put(k.hashCode(), false);
+				Runnable task = () -> {			
+					try {
+						updateSalaryInAllTables(k,v);
+						additionStatus.put(k.hashCode(), true);
+					} catch (CustomSQLException e) {
+						e.printStackTrace();
+					}
+				};			
+				Thread thread = new Thread(task, k);
+				thread.start();
+		});
+		
+		while (additionStatus.containsValue(false)) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
