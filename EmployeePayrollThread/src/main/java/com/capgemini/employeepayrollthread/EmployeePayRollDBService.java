@@ -43,7 +43,7 @@ public class EmployeePayRollDBService {
 		return employeePayRollList;
 	}
 
-	public int updateSalary(int n, String name, Double salary) throws CustomSQLException {
+	public static int updateSalary(int n, String name, Double salary) throws CustomSQLException {
 		if (n == 1)
 			return this.updateSalaryUsingStatement(name, salary);
 		else

@@ -135,6 +135,24 @@ public class EmployeePayService {
 		}
 		return result;
 	}
+	public int addEmployeeAndPayRoll(List<EmployeePayRoll> employeeList, String destination) {
+		if (destination.equals("DB")) {
+			employeeList.forEach(e -> {
+				System.out.println("Employee adding : " + e.getName());
+				try {
+					this.addEmployeeAndPayRoll(e.name, e.gender, e.salary, e.companyId, e.departmentName, e.startDate);
+				} catch (CustomSQLException e1) {
+					e1.printStackTrace();
+				}
+				System.out.println("Employee added : " + e.getName());
+			});
+		} else {
+			for (EmployeePayRoll e : employeeList) {
+				empPayRollList.add(e);
+			}
+		}
+		return empPayRollList.size();
+	}
 
 	public int addEmployeeAndPayRoll(List<EmployeePayRoll> employeeList){
 
