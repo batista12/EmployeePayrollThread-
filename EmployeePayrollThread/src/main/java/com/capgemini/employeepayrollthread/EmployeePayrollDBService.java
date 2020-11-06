@@ -15,9 +15,7 @@ import java.util.List;
 public class EmployeePayrollDBService {
 
 	private PreparedStatement preparedStatement;
-
 	private static EmployeePayrollDBService employeePayRollDBService;
-
 	private EmployeePayrollDBService() {
 	}
 
@@ -307,7 +305,7 @@ public class EmployeePayrollDBService {
 	}
 
 	public EmployeePayRoll getEmployee(String name) throws CustomSQLException {
-		List<EmployeePayRoll> employeePayRollList = new ArrayList<EmployeePayRoll>();
+		List<EmployeePayRoll> employeePayRollList = new ArrayList<EmployeePayRoll>() ;
 		employeePayRollList = this.readData();
 		return employeePayRollList.stream().filter(e -> e.getName().equals(name)).findFirst().orElse(null);
 	}
