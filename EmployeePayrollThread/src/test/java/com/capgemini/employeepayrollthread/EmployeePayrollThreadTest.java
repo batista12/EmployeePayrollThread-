@@ -349,6 +349,7 @@ public class EmployeePayrollThreadTest {
 			
 			RequestSpecification request = RestAssured.given();
 			request.header("Content-Type", "application/json");
+			
 			Response response = request.delete("/employee_payroll/" + employeePayRoll.id);
 			int statusCode = response.getStatusCode();
 				
