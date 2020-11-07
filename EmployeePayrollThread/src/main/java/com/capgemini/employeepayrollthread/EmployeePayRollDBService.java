@@ -352,7 +352,8 @@ public class EmployeePayRollDBService {
 		String jdbcURL = "jdbc:mysql://localhost:3306/employee_payroll_service?useSSL=false";
 		String userName = "root";
 		String password = "manasi@1998";
-		System.out.println("Processing Thread : " + Thread.currentThread().getName() + " with Id : " + connectionCounter);
+		System.out
+				.println("Processing Thread : " + Thread.currentThread().getName() + " with Id : " + connectionCounter);
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection(jdbcURL, userName, password);
@@ -407,6 +408,94 @@ public class EmployeePayRollDBService {
 			e.printStackTrace();
 		}
 		return employeePayRollList;
+	}
+	public int updateSalaryInPayrollTable(String name, Double salary) {
+		HashMap<Integer, Boolean> additionStatus = new HashMap<Integer, Boolean>();
+		int success[] = { 0 };
+		additionStatus.put(1, false);
+		Runnable task1 = () -> {
+			try {
+				success[0] = this.updateSalaryUsingPreparedStatement(name, salary);
+				additionStatus.put(1, true);
+			} catch (CustomSQLException e) {
+				e.printStackTrace();
+			}
+		};
+		Thread thread1 = new Thread(task1, name + "1");
+		thread1.start();
+
+		additionStatus.put(2, false);
+		Runnable task2 = () -> {
+			try {
+				updateSalaryInPayRollTable(name, salary);
+				additionStatus.put(2, true);
+			} catch (CustomSQLException e) {
+				e.printStackTrace();
+			}
+		};
+		Thread thread2 = new Thread(task2, name + "2");
+		thread2.start();
+
+		while (additionStatus.containsValue(false)) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return success[0];
+	}
+
+	private void updateSalaryInPayRollTable(String name, Double salary) throws CustomSQLException {
+		Connection connection = null;
+		String query = String.format("select * from employee_payroll where is_active = true and name = '%s' ", name);
+		int employeeId = 0;
+		ResultSet result = null;
+		try {
+			connection = this.getConnection();
+			connection.setAutoCommit(false);
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+
+		try (Statement statement = connection.createStatement();) {
+			result = statement.executeQuery(query);
+			while (result.next()) {
+				employeeId = result.getInt("Id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		try (Statement statement = connection.createStatement();) {
+			double basic_pay = salary;
+			double deductions = salary * 0.2;
+			double taxablePay = salary - deductions;
+			double tax = taxablePay * 0.1;
+			double netPay = salary - tax;
+			query = String
+					.format("update payroll_details set basic_pay= %s,deductions=%s,taxable_pay=%s,tax=%s,net_pay=%s "
+							+ "where emp_id = %s", basic_pay, deductions, taxablePay, tax, netPay, employeeId);
+			int rowAffected = statement.executeUpdate(query);
+
+		} catch (SQLException e) {
+			throw new CustomSQLException(e.getMessage(), CustomSQLException.Exception_Type.UPDATE_FAILED);
+		}
+
+		try {
+			connection.commit();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} finally {
+			if (connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+
 	}
 
 }

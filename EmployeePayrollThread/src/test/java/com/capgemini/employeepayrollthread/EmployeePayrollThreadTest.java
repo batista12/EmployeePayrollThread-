@@ -193,7 +193,7 @@ public class EmployeePayrollThreadTest {
 			EmployeePayRoll[] employeeArray = {
 					new EmployeePayRoll(0, "Manasi", "F", 130000.0, 3, Arrays.asList(departmentName),
 							Arrays.asList(LocalDate.parse("2018-05-21"))),
-					new EmployeePayRoll(0, "rinal", "F", 100000.0, 3, Arrays.asList(departmentName),
+					new EmployeePayRoll(0, "Rinal", "F", 100000.0, 3, Arrays.asList(departmentName),
 							Arrays.asList(LocalDate.parse("2016-07-29"))),
 					new EmployeePayRoll(0, "Riya", "F", 70000.0, 4, Arrays.asList(departmentName),
 							Arrays.asList(LocalDate.parse("2015-08-07"))),
@@ -238,6 +238,22 @@ public class EmployeePayrollThreadTest {
 				e.printStackTrace();
 			}
 		}
+		@Test
+		public void givenUpdatedSalaries_UpdatingMultipleEmployeesinDB_UsingPreparedStatement_ShouldMatch() {
+			EmployeePayService empPayRollService = new EmployeePayService();
+			try {
+				int entries = empPayRollService.readData("DB");
+				HashMap<String, Double> salaryMap = new HashMap<String, Double>();
+				salaryMap.put("Manasi", 130000.0);
+				salaryMap.put("Rinal", 60000.0);
+				salaryMap.put("Riya", 50000.0);
+				salaryMap.put("Kunal", 160000.0);
+				empPayRollService.updateMultipleSalary(salaryMap);
+				boolean result = empPayRollService.checkDBInSyncWithList("Natasha");
+				Assert.assertTrue(result);
+			} catch (CustomSQLException e) {
+				e.printStackTrace();
+			}
 	
 	}
 	
