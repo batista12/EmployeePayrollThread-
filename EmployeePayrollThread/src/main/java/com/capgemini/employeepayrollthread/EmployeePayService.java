@@ -19,9 +19,7 @@ public class EmployeePayService {
 	public static void main(String[] args) {
 		ArrayList<EmployeePayRoll> empPayRollList = new ArrayList<EmployeePayRoll>();
 		EmployeePayService empPayRollService = new EmployeePayService(empPayRollList);
-
 		empPayRollService.readData();
-
 		empPayRollService.writeData("Console");
 
 	}
@@ -138,7 +136,7 @@ public class EmployeePayService {
 		return result;
 	}
 
-	public int addEmployeeAndPayRoll(List<EmployeePayRoll> employeeList) {
+	public int addEmployeeAndPayRoll(List<EmployeePayRoll> employeeList){
 
 		employeeList.forEach(e -> {
 			System.out.println("Employee adding : " + e.getName());

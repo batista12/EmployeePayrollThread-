@@ -14,6 +14,9 @@ public class EmployeePayrollJDBC {
 	static String password = "Manasi@1998";
 	private static Connection con = null;
 
+	/**
+	 * @return
+	 */
 	public static Connection getConnection() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -26,7 +29,6 @@ public class EmployeePayrollJDBC {
 			e.printStackTrace();
 		}
 		listAllDrivers();
-
 		try {
 			System.out.println("Connecting to database" + url);
 			con = DriverManager.getConnection(url, userName, password);

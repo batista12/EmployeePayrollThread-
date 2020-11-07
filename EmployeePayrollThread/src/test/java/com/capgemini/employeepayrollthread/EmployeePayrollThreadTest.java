@@ -238,8 +238,6 @@ public class EmployeePayrollThreadTest {
 				e.printStackTrace();
 			}
 		}
-
-
 	
 	}
 	
