@@ -319,6 +319,20 @@ public class EmployeePayrollThreadTest {
 			countOfEntries = empPayRollService.addEmployeeAndPayRoll(employeeList,"REST_IO");
 			Assert.assertEquals(3, countOfEntries);
 		}
+		@Test
+		public void givenNewSalary_WhenUpdated_ShouldReturnSucessCode(){
+			EmployeePayRoll employeePayRoll = new EmployeePayRoll(4, "Raina", "F", 80000.0, 3, Arrays.asList("Management"),
+					Arrays.asList(LocalDate.parse("2020-04-29")));
+			String jsonString = new Gson().toJson(employeePayRoll);
+			RequestSpecification request = RestAssured.given();	
+			request.header("Content-Type","application/json");
+			request.body(jsonString);
+			Response  response = request.put("/employee_payroll/"+employeePayRoll.id);
+			int statusCode = response.getStatusCode();
+			Assert.assertEquals(200, statusCode);
+		}
+
+
 	}
 
 	
