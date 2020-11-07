@@ -13,7 +13,6 @@ public class EmployeePayrollJDBC {
 	static String userName = "root";
 	static String password = "Manasi@1998";
 	private static Connection con = null;
-
 	/**
 	 * @return
 	 */
