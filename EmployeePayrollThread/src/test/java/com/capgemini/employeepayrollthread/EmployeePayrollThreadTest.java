@@ -331,8 +331,6 @@ public class EmployeePayrollThreadTest {
 			int statusCode = response.getStatusCode();
 			Assert.assertEquals(200, statusCode);
 		}
-
-
 	}
 
 	
