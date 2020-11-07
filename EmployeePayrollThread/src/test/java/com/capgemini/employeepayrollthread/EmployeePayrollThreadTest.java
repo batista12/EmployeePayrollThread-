@@ -339,6 +339,29 @@ public class EmployeePayrollThreadTest {
 			System.out.println(CountOfEntries);
 			Assert.assertEquals(4, CountOfEntries);
 		}
+		@Test
+		public void deleteEmployee_FromJsonServer_ShouldMatchCount() {
+			EmployeePayRoll[] employees = getEmployeeList();
+			EmployeePayService empPayRollService = new EmployeePayService(
+					new ArrayList<EmployeePayRoll>(Arrays.asList(employees)));
+			EmployeePayRoll employeePayRoll = new EmployeePayRoll(10, "Riya", "F", 80000.0, 3,
+					Arrays.asList("Management"), Arrays.asList(LocalDate.parse("2020-04-29")));
+			
+			RequestSpecification request = RestAssured.given();
+			request.header("Content-Type", "application/json");
+			
+			Response response = request.delete("/employee_payroll/" + employeePayRoll.id);
+			int statusCode = response.getStatusCode();
+				
+			try {
+				empPayRollService.deleteEmployee("Riya", "REST_IO");
+			} catch (CustomSQLException e) {
+				e.printStackTrace();
+			}
+			int CountOfEntries = empPayRollService.noOfEntries("REST_IO");
+			Assert.assertEquals(200, statusCode);
+			Assert.assertEquals(10, CountOfEntries);
+		}
 
 	}
 

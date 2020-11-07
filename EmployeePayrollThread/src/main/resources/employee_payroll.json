@@ -1,23 +1,6 @@
 {
   "employee_payroll": [
     {
-      "id": 1,
-      "name": "Riya",
-      "salary": 150000,
-      "companyId": 3,
-      "gender": "F",
-      "departmentName": [
-        "Management"
-      ],
-      "startDate": [
-        {
-          "year": 2018,
-          "month": 5,
-          "day": 1
-        }
-      ]
-    },
-    {
       "id": 2,
       "name": "Shivani",
       "salary": 100000,
@@ -28,6 +11,7 @@
       ],
       "startDate": [
         {
+
           "year": 2011,
           "month": 7,
           "day": 29
