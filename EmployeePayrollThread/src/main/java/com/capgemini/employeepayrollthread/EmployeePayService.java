@@ -121,8 +121,19 @@ public class EmployeePayService {
 			empPayRollList.add(employee);
 	}
 
-	public void deleteEmployee(String name) throws CustomSQLException {
-		empPayRollList = EmployeePayrollDBService.deleteEmployee(name);
+	public void deleteEmployee(String name,String destination) throws CustomSQLException {
+		if(destination.equals("DB"))
+		empPayRollList = EmployeePayRollDBService.deleteEmployee(name);
+		else
+		{
+			Iterator itr = empPayRollList.iterator(); 
+	        while (itr.hasNext()) 
+	        { 
+	            EmployeePayRoll e = (EmployeePayRoll) itr.next(); 
+	            if(e.name.equals(name))
+	                itr.remove(); 
+	        }
+		}
 	}
 
 	public boolean checkIFDeletedFromList(String name) {
