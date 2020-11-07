@@ -5,6 +5,11 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
+import com.google.gson.Gson;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 
 public class EmployeePayrollThreadTest {
 
@@ -254,8 +259,68 @@ public class EmployeePayrollThreadTest {
 			} catch (CustomSQLException e) {
 				e.printStackTrace();
 			}
-	
+		}
+		@Before
+		public void setup() {
+			RestAssured.baseURI = "http://localhost";
+			RestAssured.port = 3000;
+		}
+
+		
+		public Response addEmployeeToJsonServer(EmployeePayRoll employeePayroll) {
+			String jsonString = new Gson().toJson(employeePayroll);
+			RequestSpecification request = RestAssured.given();
+			request.header("Content-Type", "application/json");
+			request.body(jsonString);
+			return request.post("/employee_payroll");
+		}
+
+		@Test
+		public void employeeWhenAdded_ShouldMatchCount() {
+			EmployeePayService empPayRollService = new EmployeePayService();
+			List<EmployeePayRoll> employeeList = new ArrayList<EmployeePayRoll>();
+
+			EmployeePayRoll employee = new EmployeePayRoll(0, "Riya", "F", 150000.0, 2, Arrays.asList("Management"),
+					Arrays.asList(LocalDate.parse("2018-05-01")));
+			Response response = addEmployeeToJsonServer(employee);
+			int statusCode = response.getStatusCode();
+			int countOfEntries = 0;
+			if (statusCode == 201) {
+				employee = new Gson().fromJson(response.asString(), EmployeePayRoll.class);
+				employeeList.add(employee);
+				countOfEntries = empPayRollService.addEmployeeAndPayRoll(employeeList, "REST_IO");
+			}
+			Assert.assertEquals(201, response.getStatusCode());
+			Assert.assertEquals(1, countOfEntries);
+		}
+		@Test
+		public void givenmultipleEmployee_WhenAdded_ShouldMatchCount(){
+			EmployeePayService empPayRollService = new EmployeePayService();
+			List<EmployeePayRoll> employeeList = new ArrayList<EmployeePayRoll>();
+			int countOfEntries=0;
+			EmployeePayRoll[] employees =  {
+					new EmployeePayRoll(0, "Shivani", "F", 100000.0, 3, Arrays.asList("Management"),
+							Arrays.asList(LocalDate.parse("2011-07-29"))),
+					new EmployeePayRoll(0, "Namrata", "F", 70000.0, 4, Arrays.asList("Management"),
+							Arrays.asList(LocalDate.parse("2017-07-07"))),
+					new EmployeePayRoll(0, "Raina", "F", 80000.0, 3, Arrays.asList("Management"),
+							Arrays.asList(LocalDate.parse("2020-04-29"))) };
+			for(EmployeePayRoll employee : employees)
+			{
+			Response response = addEmployeeToJsonServer(employee);
+			int statusCode = response.getStatusCode();
+			if(statusCode==201)
+			{
+				employee = new Gson().fromJson(response.asString(), EmployeePayRoll.class);
+				employeeList.add(employee);
+			}
+			Assert.assertEquals(201,response.getStatusCode());
+			}
+			countOfEntries = empPayRollService.addEmployeeAndPayRoll(employeeList,"REST_IO");
+			Assert.assertEquals(3, countOfEntries);
+		}
 	}
+
 	
 
 
